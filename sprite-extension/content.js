@@ -1,5 +1,5 @@
-// content.js — v5.2: clamp position, easy reset (Shift+click sprite), robust drag
-console.log("[CC] content.js v5.2 loaded");
+// content.js — v6: draggable sprite + draggable bubble + variety UI
+console.log("[CC] content.js v6 loaded");
 
 if (window.location.hostname === 'github.com') {
   createFloatingSprite();
@@ -20,81 +20,67 @@ function clampPos(pos){
     top:  Math.min(maxTop,  Math.max(margin, pos.top))
   };
 }
-function loadBubblePos() {
-  try {
-    const raw = localStorage.getItem('cc-bubble-pos');
-    if (!raw) return null;
-    const p = JSON.parse(raw);
-    if (typeof p.top === 'number' && typeof p.left === 'number') {
-      return clampPos(p);
-    }
+function loadPos(key) {
+  try { const raw = localStorage.getItem(key); if (!raw) return null;
+    const p = JSON.parse(raw); if (typeof p.left==='number' && typeof p.top==='number') return clampPos(p);
   } catch {}
   return null;
 }
-function saveBubblePos(pos) {
-  try { localStorage.setItem('cc-bubble-pos', JSON.stringify(clampPos(pos))); } catch {}
-}
-function resetBubblePos() {
-  try { localStorage.removeItem('cc-bubble-pos'); } catch {}
-}
+function savePos(key, pos) { try { localStorage.setItem(key, JSON.stringify(clampPos(pos))); } catch {} }
+function resetPos(key){ try{ localStorage.removeItem(key); }catch{} }
 
 // ---- UI ----
 function createFloatingSprite() {
   const scope = getRepoScopeFromUrl();
 
+  // SPRITE (draggable)
   const sprite = document.createElement('div');
   sprite.id = 'coding-companion';
   sprite.innerHTML = '🧙‍♂️';
+  const spriteStart = loadPos('cc-sprite-pos');
   sprite.style.cssText = `
-    position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+    position: fixed;
+    ${spriteStart ? `top:${spriteStart.top}px; left:${spriteStart.left}px;` : `bottom: 20px; right: 20px;`}
+    width: 60px; height: 60px;
     background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 30px; cursor: pointer; z-index: 2147483647;
+    font-size: 30px; cursor: grab; z-index: 2147483647;
     animation: gentle-bounce 3s ease-in-out infinite;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.2s ease;
+    -webkit-user-select: none; user-select: none;
   `;
 
+  // BUBBLE (draggable)
   const bubble = document.createElement('div');
   bubble.id = 'cc-bubble';
-  const startPos = loadBubblePos();
+  const bubbleStart = loadPos('cc-bubble-pos');
   bubble.style.cssText = `
-    position: fixed; ${startPos ? `top:${startPos.top}px; left:${startPos.left}px;` : `bottom: 90px; right: 20px;`}
+    position: fixed; ${bubbleStart ? `top:${bubbleStart.top}px; left:${bubbleStart.left}px;` : `bottom: 90px; right: 20px;`}
     max-width: 320px; background: #111; color: #fff; padding: 12px 14px; border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.25); font-size: 13px; line-height: 1.35; z-index: 2147483647;
     -webkit-user-select: none; user-select: none; display: block;
   `;
 
-  // Header (drag area)
+  // Bubble header (drag area) + close
   const header = document.createElement('div');
   header.id = 'cc-header';
-  header.style.cssText = `
-    display:flex; align-items:center; gap:8px; margin:-6px -8px 8px -8px; padding:6px 8px 0 8px;
+  header.style.cssText = `display:flex; align-items:center; gap:8px; margin:-6px -8px 8px -8px; padding:6px 8px 0 8px;
     cursor: grab; background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-    border-top-left-radius:10px; border-top-right-radius:10px; pointer-events:auto;
-  `;
-  const grip = document.createElement('div');
-  grip.style.cssText = `width:36px; height:6px; border-radius:3px; background:rgba(255,255,255,.3); margin:2px 0; flex:0 0 auto;`;
-
+    border-top-left-radius:10px; border-top-right-radius:10px; pointer-events:auto;`;
+  const grip = document.createElement('div'); grip.style.cssText = `width:36px; height:6px; border-radius:3px; background:rgba(255,255,255,.3); margin:2px 0; flex:0 0 auto;`;
   const closeBtn = document.createElement('button');
-  closeBtn.setAttribute('aria-label', 'Close helper');
-  closeBtn.textContent = '×';
-  closeBtn.style.cssText = `
-    margin-left:auto; width:20px; height:20px; background:transparent; color:#bbb;
-    border:none; font-size:16px; cursor:pointer; flex:0 0 auto;
-  `;
+  closeBtn.textContent = '×'; closeBtn.setAttribute('aria-label','Close helper');
+  closeBtn.style.cssText = `margin-left:auto; width:20px; height:20px; background:transparent; color:#bbb;
+    border:none; font-size:16px; cursor:pointer; flex:0 0 auto;`;
   closeBtn.addEventListener('click', ()=> { bubble.style.display = 'none'; });
 
-  header.appendChild(grip);
-  header.appendChild(closeBtn);
+  header.appendChild(grip); header.appendChild(closeBtn);
 
-  const msgWrap   = document.createElement('div'); msgWrap.id = 'cc-message'; msgWrap.textContent = 'Hi! I can analyze this repo.';
+  const msgWrap = document.createElement('div'); msgWrap.id = 'cc-message'; msgWrap.textContent = 'Hi! I can analyze this repo.';
   const coachWrap = document.createElement('div'); coachWrap.id = 'cc-coach'; coachWrap.style.cssText = `margin-top: 8px; display: none;`;
-  const whyWrap   = document.createElement('div'); whyWrap.id   = 'cc-why';   whyWrap.style.cssText   = `margin-top: 6px; font-size: 12px; color: #aaa; display: none;`;
+  const whyWrap = document.createElement('div');   whyWrap.id   = 'cc-why';   whyWrap.style.cssText   = `margin-top: 6px; font-size: 12px; color: #aaa; display: none;`;
 
-  bubble.appendChild(header);
-  bubble.appendChild(msgWrap);
-  bubble.appendChild(coachWrap);
-  bubble.appendChild(whyWrap);
+  bubble.appendChild(header); bubble.appendChild(msgWrap); bubble.appendChild(coachWrap); bubble.appendChild(whyWrap);
 
   // Styles
   const style = document.createElement('style');
@@ -107,94 +93,107 @@ function createFloatingSprite() {
   `;
   document.head.appendChild(style);
 
-  // Shift+click sprite = reset position & show bubble
+  // --- Analyze on sprite click (Shift+click also resets bubble pos) ---
   sprite.addEventListener('click', (e) => {
-    if (e.shiftKey) {
-      resetBubblePos();
-      bubble.style.bottom = '90px'; bubble.style.right = '20px';
-      bubble.style.top = 'auto'; bubble.style.left = 'auto';
-    }
+    if (e.shiftKey) { resetPos('cc-bubble-pos'); bubble.style.bottom='90px'; bubble.style.right='20px'; bubble.style.top='auto'; bubble.style.left='auto'; }
     sprite.innerHTML = '🤔';
     msgWrap.textContent = 'Analyzing recent commits…';
-    coachWrap.style.display = 'none';
-    whyWrap.style.display = 'none';
-    bubble.style.display = 'block';
+    coachWrap.style.display = 'none'; whyWrap.style.display = 'none'; bubble.style.display = 'block';
 
     setTimeout(() => {
-      chrome.runtime.sendMessage(
-        { type: 'ANALYZE_CURRENT_REPO', url: window.location.href },
-        (resp) => {
-          if (!resp) { sprite.innerHTML = '👀'; msgWrap.textContent = 'No response from helper. Try reloading the extension.'; return; }
-          const moodToEmoji = { encouraging: '😊', celebrating: '🎉', excited: '🤩', thinking: '🤔', nudging: '👀' };
-          sprite.innerHTML = moodToEmoji[resp.mood] || '🧙‍♂️';
-          msgWrap.textContent = resp.text || 'All set.';
-          coachWrap.innerHTML = ''; coachWrap.appendChild(buildCoach(scope));
-          if (resp.showCoach) coachWrap.style.display = 'block';
-          if (resp.why) {
-            whyWrap.innerHTML = `<span class="cc-link" id="cc-why-toggle">Why this?</span><span id="cc-why-text" style="display:none;"> ${escapeHtml(resp.why)}</span>`;
-            whyWrap.style.display = 'block';
-            const tgl = whyWrap.querySelector('#cc-why-toggle');
-            const txt = whyWrap.querySelector('#cc-why-text');
-            tgl.addEventListener('click', ()=> { txt.style.display = (txt.style.display==='inline') ? 'none':'inline'; });
-          } else { whyWrap.style.display = 'none'; }
-          setTimeout(() => { sprite.innerHTML = '🧙‍♂️'; }, 4000);
-        }
-      );
+      chrome.runtime.sendMessage({ type: 'ANALYZE_CURRENT_REPO', url: window.location.href }, (resp) => {
+        if (!resp) { sprite.innerHTML = '👀'; msgWrap.textContent = 'No response from helper. Try reloading the extension.'; return; }
+        const moodToEmoji = { encouraging:'😊', celebrating:'🎉', excited:'🤩', thinking:'🤔', nudging:'👀' };
+        sprite.innerHTML = moodToEmoji[resp.mood] || '🧙‍♂️';
+        msgWrap.textContent = resp.text || 'All set.';
+        coachWrap.innerHTML = ''; coachWrap.appendChild(buildCoach(scope));
+        if (resp.showCoach) coachWrap.style.display = 'block';
+        if (resp.why) {
+          whyWrap.innerHTML = `<span class="cc-link" id="cc-why-toggle">Why this?</span><span id="cc-why-text" style="display:none;"> ${escapeHtml(resp.why)}</span>`;
+          whyWrap.style.display = 'block';
+          const tgl = whyWrap.querySelector('#cc-why-toggle');
+          const txt = whyWrap.querySelector('#cc-why-text');
+          tgl.addEventListener('click', ()=> { txt.style.display = (txt.style.display==='inline') ? 'none':'inline'; });
+        } else { whyWrap.style.display = 'none'; }
+        setTimeout(()=>{ sprite.innerHTML = '🧙‍♂️'; }, 4000);
+      });
     }, 300);
   });
 
-  // Dragging (header area)
-  let dragging = false, offsetX = 0, offsetY = 0;
-  function startDrag(x, y) {
-    const r = bubble.getBoundingClientRect();
-    bubble.style.top  = r.top + 'px';
-    bubble.style.left = r.left + 'px';
-    bubble.style.bottom = 'auto';
-    bubble.style.right  = 'auto';
-    offsetX = x - r.left;
-    offsetY = y - r.top;
-    dragging = true;
-    header.style.cursor = 'grabbing';
+  // --- Drag Sprite ---
+  let sDragging=false,sDX=0,sDY=0;
+  function sStart(x,y){
+    const r = sprite.getBoundingClientRect();
+    sprite.style.top  = r.top+'px'; sprite.style.left = r.left+'px';
+    sprite.style.bottom='auto'; sprite.style.right='auto';
+    sDX = x - r.left; sDY = y - r.top; sDragging=true; sprite.style.cursor='grabbing';
   }
-  function moveDrag(x, y) {
-    if (!dragging) return;
-    const left = Math.max(8, Math.min(window.innerWidth  - 40, x - offsetX));
-    const top  = Math.max(8, Math.min(window.innerHeight - 40, y - offsetY));
-    bubble.style.left = left + 'px';
-    bubble.style.top  = top + 'px';
+  function sMove(x,y){
+    if(!sDragging) return;
+    const left = Math.max(8, Math.min(window.innerWidth-40, x - sDX));
+    const top  = Math.max(8, Math.min(window.innerHeight-40, y - sDY));
+    sprite.style.left = left+'px'; sprite.style.top = top+'px';
   }
-  function endDrag() {
-    if (!dragging) return;
-    dragging = false;
-    header.style.cursor = 'grab';
-    const r = bubble.getBoundingClientRect();
-    saveBubblePos({ top: Math.round(r.top), left: Math.round(r.left) });
+  function sEnd(){
+    if(!sDragging) return;
+    sDragging=false; sprite.style.cursor='grab';
+    const r = sprite.getBoundingClientRect();
+    savePos('cc-sprite-pos', { top: Math.round(r.top), left: Math.round(r.left) });
   }
+  sprite.addEventListener('pointerdown', e=>{ e.preventDefault(); sStart(e.clientX,e.clientY); });
+  window.addEventListener('pointermove', e=> sMove(e.clientX,e.clientY));
+  window.addEventListener('pointerup', sEnd);
+  sprite.addEventListener('mousedown', e=>{ e.preventDefault(); sStart(e.clientX,e.clientY); });
+  window.addEventListener('mousemove', e=> sMove(e.clientX,e.clientY));
+  window.addEventListener('mouseup', sEnd);
+  sprite.addEventListener('touchstart', e=>{ const t=e.touches[0]; if(!t) return; sStart(t.clientX,t.clientY); }, {passive:false});
+  window.addEventListener('touchmove', e=>{ const t=e.touches?.[0]; if(!t) return; sMove(t.clientX,t.clientY); }, {passive:false});
+  window.addEventListener('touchend', sEnd);
 
-  header.addEventListener('pointerdown', (e)=>{ e.preventDefault(); header.setPointerCapture?.(e.pointerId); startDrag(e.clientX, e.clientY); });
-  window.addEventListener('pointermove', (e)=> moveDrag(e.clientX, e.clientY));
-  window.addEventListener('pointerup', endDrag);
+  // --- Drag Bubble ---
+  let bDragging=false,bDX=0,bDY=0;
+  function bStart(x,y){
+    const r = bubble.getBoundingClientRect();
+    bubble.style.top  = r.top+'px'; bubble.style.left = r.left+'px';
+    bubble.style.bottom='auto'; bubble.style.right='auto';
+    bDX = x - r.left; bDY = y - r.top; bDragging=true; header.style.cursor='grabbing';
+  }
+  function bMove(x,y){
+    if(!bDragging) return;
+    const left = Math.max(8, Math.min(window.innerWidth-40, x - bDX));
+    const top  = Math.max(8, Math.min(window.innerHeight-40, y - bDY));
+    bubble.style.left = left+'px'; bubble.style.top = top+'px';
+  }
+  function bEnd(){
+    if(!bDragging) return;
+    bDragging=false; header.style.cursor='grab';
+    const r = bubble.getBoundingClientRect();
+    savePos('cc-bubble-pos', { top: Math.round(r.top), left: Math.round(r.left) });
+  }
+  header.addEventListener('pointerdown', e=>{ e.preventDefault(); bStart(e.clientX,e.clientY); });
+  window.addEventListener('pointermove', e=> bMove(e.clientX,e.clientY));
+  window.addEventListener('pointerup', bEnd);
+  header.addEventListener('mousedown', e=>{ e.preventDefault(); bStart(e.clientX,e.clientY); });
+  window.addEventListener('mousemove', e=> bMove(e.clientX,e.clientY));
+  window.addEventListener('mouseup', bEnd);
+  header.addEventListener('touchstart', e=>{ const t=e.touches[0]; if(!t) return; bStart(t.clientX,t.clientY); }, {passive:false});
+  window.addEventListener('touchmove', e=>{ const t=e.touches?.[0]; if(!t) return; bMove(t.clientX,t.clientY); }, {passive:false});
+  window.addEventListener('touchend', bEnd);
 
-  // Mouse/touch fallbacks
-  header.addEventListener('mousedown',  (e)=>{ e.preventDefault(); startDrag(e.clientX, e.clientY); });
-  window.addEventListener('mousemove',  (e)=> moveDrag(e.clientX, e.clientY));
-  window.addEventListener('mouseup',    endDrag);
-  header.addEventListener('touchstart', (e)=>{ const t=e.touches[0]; if (!t) return; startDrag(t.clientX, t.clientY); }, {passive:false});
-  window.addEventListener('touchmove',  (e)=>{ const t=e.touches?.[0]; if (!t||!dragging) return; moveDrag(t.clientX, t.clientY); }, {passive:false});
-  window.addEventListener('touchend',   endDrag);
+  // Snap back if off-screen due to resize
+  [ ['cc-bubble-pos', bubble, bubbleStart], ['cc-sprite-pos', sprite, spriteStart] ].forEach(([key, el, start])=>{
+    if (start) {
+      const r = el.getBoundingClientRect();
+      if (r.right < 0 || r.bottom < 0 || r.left > window.innerWidth || r.top > window.innerHeight) {
+        resetPos(key);
+        if (key==='cc-bubble-pos'){ el.style.bottom='90px'; el.style.right='20px'; el.style.top='auto'; el.style.left='auto'; }
+        if (key==='cc-sprite-pos'){ el.style.bottom='20px'; el.style.right='20px'; el.style.top='auto'; el.style.left='auto'; }
+      }
+    }
+  });
 
   document.body.appendChild(sprite);
   document.body.appendChild(bubble);
-
-  // If a saved position is off-screen due to resize, snap it back on first render
-  if (startPos) {
-    const r = bubble.getBoundingClientRect();
-    if (r.right < 0 || r.bottom < 0 || r.left > window.innerWidth || r.top > window.innerHeight) {
-      resetBubblePos();
-      bubble.style.bottom = '90px'; bubble.style.right = '20px';
-      bubble.style.top = 'auto'; bubble.style.left = 'auto';
-    }
-  }
 }
 
 function buildCoach(scope){
