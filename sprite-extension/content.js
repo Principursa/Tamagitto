@@ -1,5 +1,5 @@
-// content.js — v4: close button, "Why this?", coach auto-expand
-console.log("[CC] content.js v4 loaded");
+// content.js — v5: close button, "Why this?", coach auto-expand, DRAG to reposition (with persistence)
+console.log("[CC] content.js v5 loaded");
 
 if (window.location.hostname === 'github.com') {
   createFloatingSprite();
@@ -10,10 +10,25 @@ function getRepoScopeFromUrl() {
   return m ? m[2].toLowerCase() : "repo";
 }
 
+// --- Drag helpers ---
+function loadBubblePos() {
+  try {
+    const raw = localStorage.getItem('cc-bubble-pos');
+    if (!raw) return null;
+    const pos = JSON.parse(raw);
+    // Validate minimal shape
+    if (typeof pos.top === 'number' && typeof pos.left === 'number') return pos;
+  } catch {}
+  return null;
+}
+function saveBubblePos(pos) {
+  try { localStorage.setItem('cc-bubble-pos', JSON.stringify(pos)); } catch {}
+}
+
 function createFloatingSprite() {
   const scope = getRepoScopeFromUrl();
 
-  // Sprite
+  // Sprite (still bottom-right)
   const sprite = document.createElement('div');
   sprite.id = 'coding-companion';
   sprite.innerHTML = '🧙‍♂️';
@@ -26,13 +41,24 @@ function createFloatingSprite() {
     box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.2s ease;
   `;
 
-  // Bubble
+  // Bubble (we’ll position with top/left to support drag)
   const bubble = document.createElement('div');
   bubble.id = 'cc-bubble';
+  const startPos = loadBubblePos();
   bubble.style.cssText = `
-    position: fixed; bottom: 90px; right: 20px; max-width: 320px;
-    background: #111; color: #fff; padding: 12px 14px; border-radius: 12px;
+    position: fixed; ${startPos ? `top:${startPos.top}px; left:${startPos.left}px;` : `bottom: 90px; right: 20px;`}
+    max-width: 320px; background: #111; color: #fff; padding: 12px 14px; border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.25); font-size: 13px; line-height: 1.35; z-index: 2147483647;
+  `;
+
+  // Drag handle (thin bar at top of bubble)
+  const dragHandle = document.createElement('div');
+  dragHandle.id = 'cc-drag';
+  dragHandle.title = 'Drag to move';
+  dragHandle.style.cssText = `
+    position: relative; height: 8px; margin: -6px -8px 6px -8px; cursor: grab;
+    border-top-left-radius: 10px; border-top-right-radius: 10px;
+    background: linear-gradient(90deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
   `;
 
   // Close button
@@ -45,21 +71,20 @@ function createFloatingSprite() {
   `;
   closeBtn.addEventListener('click', ()=> { bubble.style.display = 'none'; });
 
-  // Message container
+  // Message, Coach, Why
   const msgWrap = document.createElement('div');
   msgWrap.id = 'cc-message';
   msgWrap.textContent = 'Hi! I can analyze this repo.';
 
-  // Coach container
   const coachWrap = document.createElement('div');
   coachWrap.id = 'cc-coach';
   coachWrap.style.cssText = `margin-top: 8px; display: none;`;
 
-  // Why-this container
   const whyWrap = document.createElement('div');
   whyWrap.id = 'cc-why';
   whyWrap.style.cssText = `margin-top: 6px; font-size: 12px; color: #aaa; display: none;`;
 
+  bubble.appendChild(dragHandle);
   bubble.appendChild(closeBtn);
   bubble.appendChild(msgWrap);
   bubble.appendChild(coachWrap);
@@ -120,6 +145,40 @@ function createFloatingSprite() {
         }
       );
     }, 300);
+  });
+
+  // Drag logic (pointer events work for mouse + touch)
+  let drag = null;
+  dragHandle.addEventListener('pointerdown', (e) => {
+    dragHandle.setPointerCapture(e.pointerId);
+    const rect = bubble.getBoundingClientRect();
+    drag = {
+      dx: e.clientX - rect.left,
+      dy: e.clientY - rect.top
+    };
+    dragHandle.style.cursor = 'grabbing';
+    // Switch to top/left anchoring for consistent math
+    bubble.style.top = rect.top + 'px';
+    bubble.style.left = rect.left + 'px';
+    bubble.style.bottom = 'auto';
+    bubble.style.right = 'auto';
+  });
+
+  window.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const left = Math.max(8, Math.min(window.innerWidth - 40, e.clientX - drag.dx));
+    const top  = Math.max(8, Math.min(window.innerHeight - 40, e.clientY - drag.dy));
+    bubble.style.left = left + 'px';
+    bubble.style.top  = top + 'px';
+  });
+
+  window.addEventListener('pointerup', () => {
+    if (!drag) return;
+    dragHandle.style.cursor = 'grab';
+    drag = null;
+    // Save position
+    const rect = bubble.getBoundingClientRect();
+    saveBubblePos({ top: Math.round(rect.top), left: Math.round(rect.left) });
   });
 
   document.body.appendChild(sprite);
