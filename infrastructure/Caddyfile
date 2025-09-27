@@ -5,8 +5,18 @@
     # Enable file server for static files
     file_server
     
+    # API documentation
+    handle /docs* {
+        reverse_proxy backend:8000
+    }
+    
     # API reverse proxy
     handle /api/* {
+        reverse_proxy backend:8000
+    }
+    
+    # Webhook endpoints
+    handle /webhook/* {
         reverse_proxy backend:8000
     }
     
