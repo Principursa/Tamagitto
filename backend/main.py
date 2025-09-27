@@ -4,6 +4,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+# Import routers
+from routers import (
+    auth_router,
+    repositories_router,
+    entities_router,
+    analysis_router,
+    webhooks_router,
+    websocket_router
+)
+
 # Create FastAPI app
 app = FastAPI(
     title="Tamagitto API",
@@ -25,6 +35,14 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type"],
 )
+
+# Include routers
+app.include_router(auth_router, prefix="/api")
+app.include_router(repositories_router, prefix="/api")
+app.include_router(entities_router, prefix="/api") 
+app.include_router(analysis_router, prefix="/api")
+app.include_router(webhooks_router)
+app.include_router(websocket_router, prefix="/api")
 
 
 @app.get("/")
