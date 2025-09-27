@@ -1,9 +1,14 @@
+import os
+import sys
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
+
+# Add parent directory to Python path so we can import our models
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -14,11 +19,18 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = None
+# Import our models and database configuration
+from database import Base
+# Import models individually to ensure they're registered with Base
+from models.user import User
+from models.repository import Repository
+from models.entity import Entity
+from models.commit_analysis import CommitAnalysis
+from models.health_history import HealthHistory
+from models.user_session import UserSession
+
+# Add your model's MetaData object here for 'autogenerate' support
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
