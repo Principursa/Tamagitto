@@ -1,0 +1,52 @@
+{$DOMAIN:localhost} {
+    # Static site root
+    root * /var/www/static
+    
+    # Enable file server for static files
+    file_server
+    
+    # API reverse proxy
+    handle /api/* {
+        reverse_proxy backend:8000
+    }
+    
+    # WebSocket support for real-time updates
+    handle /api/ws {
+        reverse_proxy backend:8000 {
+            header_up Upgrade {http.request.header.upgrade}
+            header_up Connection {http.request.header.connection}
+        }
+    }
+    
+    # Security headers
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy strict-origin-when-cross-origin
+        
+        # CORS headers for extension
+        Access-Control-Allow-Origin "chrome-extension://*"
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "Authorization, Content-Type"
+        Access-Control-Max-Age "86400"
+    }
+    
+    # Handle CORS preflight requests
+    @options {
+        method OPTIONS
+    }
+    respond @options 204
+    
+    # Compression
+    encode gzip zstd
+    
+    # Logging
+    log {
+        output file /data/access.log
+        format json
+    }
+    
+    # Try files, then fallback to index.html for SPA behavior
+    try_files {path} {path}/ /index.html
+}
