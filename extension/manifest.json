@@ -1,10 +1,54 @@
 {
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
-  "version": "1.0",
-  "manifest_version": 3,
-  "action": {
-    "default_popup": "hello.html",
-    "default_icon": "hello_extensions.png"
-  }
+    "manifest_version": 3,
+    "name": "Tamagitto - Code Tamagotchi",
+    "version": "1.0.0",
+    "description": "Keep your code pet alive with quality commits!",
+    
+    "permissions": [
+        "storage",
+        "identity",
+        "activeTab",
+        "notifications",
+        "alarms"
+    ],
+    
+    "host_permissions": [
+        "https://tamagitto.xyz/*",
+        "https://github.com/*",
+        "https://api.github.com/*"
+    ],
+    
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Tamagitto - Check your code pet!",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "32": "icons/icon32.png",
+            "48": "icons/icon48.png", 
+            "128": "icons/icon128.png"
+        }
+    },
+    
+    "background": {
+        "service_worker": "background.js"
+    },
+    
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    },
+    
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+
+    "oauth2": {
+        "client_id": "your_github_client_id_here",
+        "scopes": [
+            "https://api.github.com/user",
+            "https://api.github.com/user/repos"
+        ]
+    }
 }
