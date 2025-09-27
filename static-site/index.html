@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamagitto - Code Tamagotchi</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .status {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .api-link {
+            color: #4fd1c7;
+            text-decoration: none;
+        }
+        .api-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐾 Tamagitto</h1>
+        <p class="subtitle">Keep your code pet alive with quality commits!</p>
+        
+        <div class="status">
+            <h2>🚀 System Status</h2>
+            <p>API is running successfully!</p>
+            <p>Check the <a href="/api/status" class="api-link">API Status</a> | <a href="/docs" class="api-link">API Documentation</a></p>
+        </div>
+        
+        <div class="status">
+            <h3>Coming Soon</h3>
+            <p>🔧 Chrome Extension Interface</p>
+            <p>🤖 AI-Powered Commit Analysis</p>
+            <p>📊 Entity Health Tracking</p>
+            <p>🎮 Gamified Development Experience</p>
+        </div>
+        
+        <p style="margin-top: 40px; opacity: 0.7;">
+            A Tamagotchi-style app that lives or dies based on your code quality and commit frequency.
+        </p>
+    </div>
+</body>
+</html>
