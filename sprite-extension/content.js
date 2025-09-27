@@ -1,5 +1,5 @@
-// content.js — v3 with "Coach me"
-console.log("[CC] content.js v3 loaded");
+// content.js — v4: close button, "Why this?", coach auto-expand
+console.log("[CC] content.js v4 loaded");
 
 if (window.location.hostname === 'github.com') {
   createFloatingSprite();
@@ -21,7 +21,7 @@ function createFloatingSprite() {
     position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
     background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 30px; cursor: pointer; z-index: 10000;
+    font-size: 30px; cursor: pointer; z-index: 2147483647;
     animation: gentle-bounce 3s ease-in-out infinite;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.2s ease;
   `;
@@ -30,22 +30,40 @@ function createFloatingSprite() {
   const bubble = document.createElement('div');
   bubble.id = 'cc-bubble';
   bubble.style.cssText = `
-    position: fixed; bottom: 90px; right: 20px; max-width: 300px;
-    background: #111; color: #fff; padding: 10px 12px; border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25); font-size: 13px; line-height: 1.3; z-index: 10000;
+    position: fixed; bottom: 90px; right: 20px; max-width: 320px;
+    background: #111; color: #fff; padding: 12px 14px; border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25); font-size: 13px; line-height: 1.35; z-index: 2147483647;
   `;
-  bubble.textContent = 'Hi! I can analyze this repo.';
 
-  // Coach me container
-  const coach = document.createElement('div');
-  coach.id = 'cc-coach';
-  coach.style.cssText = `margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;`;
-  coach.innerHTML = `
-    <button data-cc="coach" style="background:#fff;color:#111;border:none;border-radius:10px;padding:6px 10px;cursor:pointer;font-size:12px">
-      Coach me
-    </button>
+  // Close button
+  const closeBtn = document.createElement('button');
+  closeBtn.setAttribute('aria-label', 'Close helper');
+  closeBtn.textContent = '×';
+  closeBtn.style.cssText = `
+    position: absolute; top: 6px; right: 8px; width: 20px; height: 20px;
+    background: transparent; color: #bbb; border: none; font-size: 16px; cursor: pointer;
   `;
-  bubble.appendChild(coach);
+  closeBtn.addEventListener('click', ()=> { bubble.style.display = 'none'; });
+
+  // Message container
+  const msgWrap = document.createElement('div');
+  msgWrap.id = 'cc-message';
+  msgWrap.textContent = 'Hi! I can analyze this repo.';
+
+  // Coach container
+  const coachWrap = document.createElement('div');
+  coachWrap.id = 'cc-coach';
+  coachWrap.style.cssText = `margin-top: 8px; display: none;`;
+
+  // Why-this container
+  const whyWrap = document.createElement('div');
+  whyWrap.id = 'cc-why';
+  whyWrap.style.cssText = `margin-top: 6px; font-size: 12px; color: #aaa; display: none;`;
+
+  bubble.appendChild(closeBtn);
+  bubble.appendChild(msgWrap);
+  bubble.appendChild(coachWrap);
+  bubble.appendChild(whyWrap);
 
   // Styles
   const style = document.createElement('style');
@@ -54,13 +72,17 @@ function createFloatingSprite() {
     #coding-companion:hover { transform: scale(1.08) !important; }
     .cc-chip{background:#fff;color:#111;border:none;border-radius:10px;padding:6px 10px;cursor:pointer;font-size:12px}
     .cc-small{font-size:11px;opacity:.8;margin-top:6px}
+    .cc-link{color:#9ad; text-decoration:underline; cursor:pointer; font-size:12px; margin-left:6px}
   `;
   document.head.appendChild(style);
 
   // Sprite click → analyze
   sprite.addEventListener('click', () => {
     sprite.innerHTML = '🤔';
-    bubble.firstChild?.nodeType === 3 ? bubble.firstChild.nodeValue = 'Analyzing recent commits…' : (bubble.textContent = 'Analyzing recent commits…');
+    msgWrap.textContent = 'Analyzing recent commits…';
+    coachWrap.style.display = 'none';
+    whyWrap.style.display = 'none';
+    bubble.style.display = 'block';
 
     setTimeout(() => {
       chrome.runtime.sendMessage(
@@ -68,14 +90,32 @@ function createFloatingSprite() {
         (resp) => {
           if (!resp) {
             sprite.innerHTML = '👀';
-            bubble.textContent = 'No response from helper. Try reloading the extension.';
+            msgWrap.textContent = 'No response from helper. Try reloading the extension.';
             return;
           }
           const moodToEmoji = { encouraging: '😊', celebrating: '🎉', excited: '🤩', thinking: '🤔', nudging: '👀' };
           sprite.innerHTML = moodToEmoji[resp.mood] || '🧙‍♂️';
-          // Keep existing nodes, just update first text
-          bubble.innerHTML = `<div>${resp.text || 'All set.'}</div>`;
-          bubble.appendChild(buildCoach(scope));
+          msgWrap.textContent = resp.text || 'All set.';
+
+          // Coach section
+          coachWrap.innerHTML = '';
+          coachWrap.appendChild(buildCoach(scope));
+          if (resp.showCoach) coachWrap.style.display = 'block';
+
+          // Why this?
+          if (resp.why) {
+            whyWrap.innerHTML = `<span class="cc-link" id="cc-why-toggle">Why this?</span><span id="cc-why-text" style="display:none;"> ${escapeHtml(resp.why)}</span>`;
+            whyWrap.style.display = 'block';
+            const tgl = whyWrap.querySelector('#cc-why-toggle');
+            const txt = whyWrap.querySelector('#cc-why-text');
+            tgl.addEventListener('click', ()=> {
+              const vis = txt.style.display === 'inline';
+              txt.style.display = vis ? 'none' : 'inline';
+            });
+          } else {
+            whyWrap.style.display = 'none';
+          }
+
           setTimeout(() => { sprite.innerHTML = '🧙‍♂️'; }, 4000);
         }
       );
@@ -87,40 +127,34 @@ function createFloatingSprite() {
 }
 
 function buildCoach(scope){
-  // Buttons with commit message templates; click copies to clipboard
   const wrap = document.createElement('div');
-  wrap.style.marginTop = '8px';
   wrap.innerHTML = `
     <div style="display:flex;gap:6px;flex-wrap:wrap">
-      <button class="cc-chip" data-template="feat(${scope}): ">
-        feat(${scope}): …
-      </button>
-      <button class="cc-chip" data-template="fix(${scope}): ">
-        fix(${scope}): …
-      </button>
-      <button class="cc-chip" data-template="docs(${scope}): ">
-        docs(${scope}): …
-      </button>
-      <button class="cc-chip" data-template="refactor(${scope}): ">
-        refactor(${scope}): …
-      </button>
+      <button class="cc-chip" data-template="feat(${scope}): ">feat(${scope}): …</button>
+      <button class="cc-chip" data-template="fix(${scope}): ">fix(${scope}): …</button>
+      <button class="cc-chip" data-template="docs(${scope}): ">docs(${scope}): …</button>
+      <button class="cc-chip" data-template="refactor(${scope}): ">refactor(${scope}): …</button>
     </div>
     <div class="cc-small">Click a chip to copy a Conventional Commit starter to your clipboard.</div>
   `;
 
   wrap.querySelectorAll('[data-template]').forEach(btn=>{
+    const label = btn.textContent;
     btn.addEventListener('click', async (e)=>{
       const text = e.currentTarget.getAttribute('data-template');
       try {
         await navigator.clipboard.writeText(text);
         e.currentTarget.textContent = 'Copied ✓';
-        setTimeout(()=>{ e.currentTarget.textContent = text.trim(); }, 1200);
-      } catch (err){
-        // Fallback if clipboard not allowed
+        setTimeout(()=>{ e.currentTarget.textContent = label; }, 1200);
+      } catch {
         prompt('Copy this commit message start:', text);
       }
     });
   });
 
   return wrap;
+}
+
+function escapeHtml(s=''){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
