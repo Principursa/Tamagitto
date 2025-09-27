@@ -53,3 +53,4 @@ env/
 
 # Database files
 *.sqlite3
+.claude
