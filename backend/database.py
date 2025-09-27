@@ -2,8 +2,9 @@
 
 import os
 from typing import Generator
+from datetime import datetime
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Column, Integer, DateTime, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.pool import QueuePool
@@ -53,3 +54,10 @@ def create_tables() -> None:
 def drop_tables() -> None:
     """Drop all database tables (for testing only)."""
     Base.metadata.drop_all(bind=engine)
+
+
+class TimestampMixin:
+    """Mixin class for adding created_at and updated_at timestamps."""
+    
+    created_at = Column(DateTime, default=func.now(), nullable=False)
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
