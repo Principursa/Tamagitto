@@ -1,0 +1,590 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Code Companion Sprite&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Arial', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 120px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 120px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: bounce 2s ease-in-out infinite;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: transform 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite::before {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: "🧙‍♂️";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 60px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translate(-50%, -50%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: wiggle 3s ease-in-out infinite;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.5s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* Different facial expressions */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite.encouraging::before {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: "😊";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: nod 1s ease-in-out 3;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite.celebrating::before {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: "🎉";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: celebrate-face 1s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite.nudging::before {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: "🤔";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: think 2s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite.worried::before {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: "😟";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: shake 0.5s ease-in-out 3;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sprite.excited::before {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: "🤩";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: bounce-face 0.8s ease-in-out 3;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.speech-bubble {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bottom: 160px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateX(-50%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 300px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateX(-50%) translateY(20px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.5s ease;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.4;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #333;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.speech-bubble::after {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>content: "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bottom: -10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateX(-50%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-left: 10px solid transparent;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-right: 10px solid transparent;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-top: 10px solid white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.speech-bubble.show {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateX(-50%) translateY(0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.controls {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>z-index: 100;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.9);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 25px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.github-input {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>right: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.github-input input {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.9);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.status {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>right: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.9);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #666;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes bounce {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0%, 20%, 50%, 80%, 100% {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>transform: translateY(0);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>40% {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>transform: translateY(-20px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>60% {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>transform: translateY(-10px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes wiggle {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>25% { transform: translate(-50%, -50%) rotate(5deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>75% { transform: translate(-50%, -50%) rotate(-5deg); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes celebrate {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: scale(1) rotate(0deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>25% { transform: scale(1.2) rotate(10deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: scale(1.1) rotate(-5deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>75% { transform: scale(1.15) rotate(5deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: scale(1) rotate(0deg); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes nod {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0%, 100% { transform: translate(-50%, -50%) translateY(0); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: translate(-50%, -50%) translateY(-5px); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes celebrate-face {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0%, 100% { transform: translate(-50%, -50%) scale(1); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: translate(-50%, -50%) scale(1.3); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes think {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>25% { transform: translate(-50%, -50%) rotate(-3deg); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>75% { transform: translate(-50%, -50%) rotate(3deg); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes shake {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0%, 100% { transform: translate(-50%, -50%) translateX(0); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>25% { transform: translate(-50%, -50%) translateX(-3px); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>75% { transform: translate(-50%, -50%) translateX(3px); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes bounce-face {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0%, 100% { transform: translate(-50%, -50%) translateY(0); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: translate(-50%, -50%) translateY(-10px); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.celebrating {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: celebrate 1s ease-in-out;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="controls"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="btn" onclick="testMessage('encouraging')"&gt;Test Encouraging&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="btn" onclick="testMessage('celebrating')"&gt;Test Celebration&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="btn" onclick="testMessage('nudging')"&gt;Test Nudge&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="btn" onclick="startAutoCheck()"&gt;Auto-Check (5min)&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="github-input"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="repoInput" placeholder="username/repo" value="Principursa/Tamagitto"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="btn" onclick="checkGitHub()"&gt;Check Commits&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="btn" onclick="checkMyRepos()"&gt;My Recent Repos&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="speech-bubble" id="speechBubble"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>Hi! I'm your coding companion! 👋 Click the buttons to test me, or add your GitHub repo above!</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sprite" id="sprite" onclick="randomMessage()"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="status" id="status"&gt;Ready to motivate! 🚀&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Test messages for different moods</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const messages = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>encouraging: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"You've got this! Every expert was once a beginner! 💪",</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"Small progress is still progress. Keep going! 🌟",</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"Debugging is like being a detective. You're solving mysteries! 🔍"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>celebrating: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"Awesome commit! Your code is looking great! 🎉",</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"Nice work! That was a solid improvement! ✨",</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"You're on fire! Keep up the momentum! 🔥"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>],</p>
+<p class="p1"><span class="Apple-converted-space">            </span>nudging: [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"It's been a while since your last commit. Ready to code? 🤔",</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"Your repo is waiting for some love! Time to create something cool? 💻",</p>
+<p class="p1"><span class="Apple-converted-space">                </span>"Break time's over! Let's get back to building amazing things! ⚡"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>]</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Enhanced text-to-speech function</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function speakMessage(text, mood) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!('speechSynthesis' in window)) return;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Cancel any ongoing speech</p>
+<p class="p1"><span class="Apple-converted-space">            </span>speechSynthesis.cancel();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Clean text for more natural speech (remove emojis and clean up)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let cleanText = text.replace(/[🎉🚀💪🌟🔍✨🔥🤔💻⚡🎯👋]/g, '');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cleanText = cleanText.replace(/!/g, '.'); // Replace ! with . for more natural pauses</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const utterance = new SpeechSynthesisUtterance(cleanText);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Voice settings based on mood</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const voiceSettings = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>encouraging: { rate: 0.85, pitch: 1.2, volume: 0.8 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>celebrating: { rate: 1.1, pitch: 1.4, volume: 0.9 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>nudging: { rate: 0.75, pitch: 1.0, volume: 0.7 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>worried: { rate: 0.7, pitch: 0.9, volume: 0.6 },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>excited: { rate: 1.2, pitch: 1.5, volume: 1.0 }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const settings = voiceSettings[mood] || voiceSettings.encouraging;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>utterance.rate = settings.rate;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>utterance.pitch = settings.pitch;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>utterance.volume = settings.volume;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Try to find a more natural voice</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const voices = speechSynthesis.getVoices();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Prefer these voice types in order</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const preferredVoices = [</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Google US English Female',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Microsoft Zira Desktop',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Alex',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Samantha',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Victoria',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Google UK English Female',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Google UK English Male',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Microsoft David Desktop',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Google US English Male'</p>
+<p class="p1"><span class="Apple-converted-space">            </span>];</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let selectedVoice = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let preferred of preferredVoices) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>selectedVoice = voices.find(voice =&gt; voice.name.includes(preferred));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (selectedVoice) break;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Fallback to any English voice that sounds natural</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!selectedVoice) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>selectedVoice = voices.find(voice =&gt;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>voice.lang.startsWith('en') &amp;&amp;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>(voice.name.includes('Female') || voice.name.includes('Male'))</p>
+<p class="p1"><span class="Apple-converted-space">                </span>);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Final fallback to default English voice</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!selectedVoice) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>selectedVoice = voices.find(voice =&gt; voice.lang.startsWith('en'));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (selectedVoice) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>utterance.voice = selectedVoice;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Add natural pauses and emphasis</p>
+<p class="p1"><span class="Apple-converted-space">            </span>utterance.onboundary = function(event) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (event.name === 'sentence') {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Add slight pause between sentences</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; {}, 200);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>speechSynthesis.speak(utterance);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Show speech bubble with message and expression</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showMessage(text, mood = 'encouraging') {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const bubble = document.getElementById('speechBubble');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const sprite = document.getElementById('sprite');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>bubble.textContent = text;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>bubble.classList.add('show');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Clear previous mood classes</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sprite.classList.remove('encouraging', 'celebrating', 'nudging', 'worried', 'excited');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Add the appropriate mood class for facial expression</p>
+<p class="p1"><span class="Apple-converted-space">            </span>sprite.classList.add(mood);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Use enhanced speech function</p>
+<p class="p1"><span class="Apple-converted-space">            </span>speakMessage(text, mood);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Hide after 6 seconds (longer for natural speech)</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>bubble.classList.remove('show');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>sprite.classList.remove('encouraging', 'celebrating', 'nudging', 'worried', 'excited');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}, 6000);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Test message function</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function testMessage(mood) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const moodMessages = messages[mood];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const randomMessage = moodMessages[Math.floor(Math.random() * moodMessages.length)];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showMessage(randomMessage, mood);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateStatus(`Testing ${mood} message`);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Random message when sprite is clicked</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function randomMessage() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const moods = ['encouraging', 'celebrating', 'nudging'];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const randomMood = moods[Math.floor(Math.random() * moods.length)];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const moodMessages = messages[randomMood];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const randomMessage = moodMessages[Math.floor(Math.random() * moodMessages.length)];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showMessage(randomMessage, randomMood);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Update status</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateStatus(text) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('status').textContent = text;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// GitHub API integration</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function fetchGitHubCommits(repo) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const [owner, repoName] = repo.split('/');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}/commits?per_page=10`);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error(`HTTP ${response.status}: ${response.statusText}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const commits = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return commits;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('GitHub API Error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>throw error;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Analyze commits and generate personality response</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function analyzeCommits(commits) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!commits || commits.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message: "Hmm, I don't see any commits yet. Ready to start coding? 🚀",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mood: "nudging"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const now = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const recent = commits.filter(commit =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const commitDate = new Date(commit.commit.author.date);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const hoursAgo = (now - commitDate) / (1000 * 60 * 60);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return hoursAgo &lt; 24; // Last 24 hours</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const lastCommit = commits[0];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const lastCommitDate = new Date(lastCommit.commit.author.date);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const hoursAgo = (now - lastCommitDate) / (1000 * 60 * 60);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const message = lastCommit.commit.message.toLowerCase();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Analyze commit patterns and generate appropriate response</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (recent.length &gt;= 5) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message: `Whoa! ${recent.length} commits in 24 hours? You're absolutely on fire! 🔥`,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mood: "excited"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (recent.length &gt;= 2) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message: `Nice! ${recent.length} commits today. Your consistency is paying off! 💪`,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mood: "celebrating"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (hoursAgo &lt; 2) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Recent commit - analyze the message</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (message.includes('fix') || message.includes('bug')) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>message: "Great debugging work! Every bug fixed makes you a better developer! 🔍",</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>mood: "encouraging"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (message.includes('feature') || message.includes('add')) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>message: "Love seeing new features! Your project is evolving beautifully! ✨",</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>mood: "celebrating"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (message.includes('refactor') || message.includes('clean')) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>message: "Refactoring shows real craftsmanship! Clean code is happy code! 🌟",</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>mood: "celebrating"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>message: `Just saw your commit: "${lastCommit.commit.message.substring(0, 30)}..." - nice work! 🎯`,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>mood: "encouraging"</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (hoursAgo &lt; 24) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message: `Your last commit was ${Math.round(hoursAgo)} hours ago. Ready for another coding session? 💻`,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mood: "nudging"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (hoursAgo &lt; 72) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message: "It's been a couple days since your last commit. No pressure, but your code misses you! 🤔",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mood: "nudging"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message: "Hey there, stranger! Your repo has been quiet. Time to wake it up with some fresh code? ⚡",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mood: "worried"</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Enhanced GitHub check function</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function checkGitHub() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const repo = document.getElementById('repoInput').value.trim();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!repo || !repo.includes('/')) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>showMessage("Please enter a valid GitHub repo in the format: username/repository", "worried");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateStatus(`Checking ${repo}...`);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const commits = await fetchGitHubCommits(repo);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const analysis = analyzeCommits(commits);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>showMessage(analysis.message, analysis.mood);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateStatus(`Analyzed ${commits.length} commits from ${repo}`);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Store the repo for future checks</p>
+<p class="p1"><span class="Apple-converted-space">                </span>localStorage.setItem('lastRepo', repo);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error.message.includes('404')) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMessage("Hmm, I can't find that repository. Double-check the username and repo name? 🤔", "worried");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (error.message.includes('403')) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMessage("Looks like I hit a rate limit. Try again in a few minutes! ⏰", "nudging");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMessage("Having trouble connecting to GitHub right now. Check your internet connection? 📡", "worried");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateStatus("GitHub check failed");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Detailed error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Auto-check functionality</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let autoCheckInterval = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function startAutoCheck() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const repo = document.getElementById('repoInput').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!repo || !repo.includes('/')) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>showMessage("Please enter a valid repo first, then I can auto-check it for you! 📝", "nudging");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (autoCheckInterval) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>clearInterval(autoCheckInterval);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>autoCheckInterval = null;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateStatus("Auto-check stopped");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>showMessage("I'll stop auto-checking for now. Click again to restart! 😊", "encouraging");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>autoCheckInterval = setInterval(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>checkGitHub();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}, 5 * 60 * 1000); // 5 minutes</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>showMessage("I'll check your repo every 5 minutes now! Keep coding! 🚀", "excited");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateStatus("Auto-checking every 5 minutes...");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function checkMyRepos() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const savedRepo = localStorage.getItem('lastRepo');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (savedRepo) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('repoInput').value = savedRepo;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>checkGitHub();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>showMessage("I don't have any saved repos yet. Check one first! 📚", "nudging");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Load voices when available</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let voicesLoaded = false;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function loadVoices() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const voices = speechSynthesis.getVoices();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (voices.length &gt; 0 &amp;&amp; !voicesLoaded) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>voicesLoaded = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Available voices:', voices.map(v =&gt; v.name));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Test with a more natural voice on first load</p>
+<p class="p1"><span class="Apple-converted-space">                </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMessage("Hi! I'm your coding companion! I can now read your actual GitHub commits and give you real feedback! Try entering your repo above! 👋", "encouraging");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}, 1500);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Voices load asynchronously</p>
+<p class="p1"><span class="Apple-converted-space">        </span>speechSynthesis.onvoiceschanged = loadVoices;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>loadVoices(); // Try loading immediately too</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
