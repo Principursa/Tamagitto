@@ -8,7 +8,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Nume
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
 
-from backend.database import Base, TimestampMixin
+from database import Base, TimestampMixin
 
 
 class CommitAnalysis(Base, TimestampMixin):

@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 from cryptography.fernet import Fernet
 import base64
 
-from backend.database import Base, TimestampMixin
+from database import Base, TimestampMixin
 
 
 class User(Base, TimestampMixin):

@@ -6,7 +6,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, BigInteger, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
-from backend.database import Base, TimestampMixin
+from database import Base, TimestampMixin
 
 
 class Repository(Base, TimestampMixin):

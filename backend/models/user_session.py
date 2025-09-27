@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
-from backend.database import Base
+from database import Base
 
 
 class UserSession(Base):

@@ -8,7 +8,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Chec
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
 
-from backend.database import Base, TimestampMixin
+from database import Base, TimestampMixin
 
 
 class Entity(Base, TimestampMixin):
@@ -80,7 +80,7 @@ class Entity(Base, TimestampMixin):
         return urls.get(health_status, self.visual_url)
     
     @property
-    def metadata(self) -> Dict[str, Any]:
+    def custom_metadata(self) -> Dict[str, Any]:
         """Get metadata as dictionary."""
         if isinstance(self.metadata_json, str):
             return json.loads(self.metadata_json)
@@ -194,7 +194,7 @@ class Entity(Base, TimestampMixin):
     
     def update_metadata(self, **kwargs) -> None:
         """Update entity metadata with new key-value pairs."""
-        current_metadata = self.metadata
+        current_metadata = self.custom_metadata
         current_metadata.update(kwargs)
         self.metadata_json = current_metadata
     
@@ -218,7 +218,7 @@ class Entity(Base, TimestampMixin):
             "health_status": self.health_status,
             "status": self.status,
             "visual_url": self.visual_state_url,
-            "metadata": self.metadata,
+            "metadata": self.custom_metadata,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
             "death_date": self.death_date.isoformat() if self.death_date else None,
