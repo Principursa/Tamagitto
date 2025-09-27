@@ -10,6 +10,7 @@ from routers import (
     repositories_router,
     entities_router,
     analysis_router,
+    ai_analysis_router,
     webhooks_router,
     websocket_router
 )
@@ -41,6 +42,7 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(repositories_router, prefix="/api")
 app.include_router(entities_router, prefix="/api") 
 app.include_router(analysis_router, prefix="/api")
+app.include_router(ai_analysis_router, prefix="/api")
 app.include_router(webhooks_router)
 app.include_router(websocket_router, prefix="/api")
 

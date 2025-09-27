@@ -10,12 +10,13 @@ from sqlalchemy.orm import Session
 from models.commit_analysis import CommitAnalysis
 from models.repository import Repository
 from services.github_service import GitHubService
+from agents.code_analysis_agent import CodeAnalysisAgent
 
 
 class AnalysisService:
     """Service for analyzing commits and calculating health impact using AI agents."""
     
-    # Quality scoring weights
+    # Quality scoring weights (used for fallback analysis)
     QUALITY_WEIGHTS = {
         "commit_message": 0.15,
         "code_changes": 0.30,
@@ -25,7 +26,7 @@ class AnalysisService:
         "consistency": 0.10
     }
     
-    # Health impact ranges
+    # Health impact ranges (used for fallback analysis)
     HEALTH_IMPACT_RANGES = {
         "excellent": (15, 20),    # 90-100 quality score
         "good": (5, 15),          # 70-89 quality score  
@@ -36,8 +37,16 @@ class AnalysisService:
     
     def __init__(self):
         self.github_service = GitHubService()
-        # TODO: Initialize google-adk agent when available
-        # self.code_agent = CodeAnalysisAgent()
+        
+        # Initialize AI agent for enhanced analysis
+        try:
+            self.ai_agent = CodeAnalysisAgent()
+            self.ai_enabled = True
+            print("AI analysis agent initialized successfully")
+        except Exception as e:
+            print(f"Failed to initialize AI agent, falling back to basic analysis: {e}")
+            self.ai_agent = None
+            self.ai_enabled = False
     
     async def analyze_commit(self, db: Session, repository: Repository, 
                            commit_data: Dict[str, Any], 
@@ -65,14 +74,40 @@ class AnalysisService:
             commit_data.update(detailed_commit)
             metrics = self.github_service.extract_commit_metrics(commit_data)
         
-        # Perform quality analysis
-        quality_scores = await self._analyze_commit_quality(commit_data, repository)
+        # Prepare repository context for AI analysis
+        repository_context = {
+            "name": repository.full_name,
+            "language": repository.language,
+            "type": "repository"
+        }
         
-        # Calculate overall quality score (0-100)
-        quality_score = self._calculate_quality_score(quality_scores)
-        
-        # Determine health impact based on quality
-        health_impact = self._calculate_health_impact(quality_score, metrics)
+        # Perform AI-powered analysis if available
+        if self.ai_enabled and self.ai_agent:
+            try:
+                ai_analysis = await self.ai_agent.analyze_commit_quality(
+                    commit_data, repository_context
+                )
+                quality_score = ai_analysis.get("overall_quality_score", 60)
+                
+                # Get AI-suggested health impact
+                health_impact = await self.ai_agent.suggest_health_impact(
+                    ai_analysis, {"commit_metrics": metrics, "repository": repository_context}
+                )
+                
+                # Store AI analysis results
+                quality_scores = ai_analysis.get("dimension_scores", {})
+                
+            except Exception as e:
+                print(f"AI analysis failed, falling back to basic analysis: {e}")
+                # Fallback to basic analysis
+                quality_scores = await self._analyze_commit_quality(commit_data, repository)
+                quality_score = self._calculate_quality_score(quality_scores)
+                health_impact = self._calculate_health_impact(quality_score, metrics)
+        else:
+            # Use basic analysis
+            quality_scores = await self._analyze_commit_quality(commit_data, repository)
+            quality_score = self._calculate_quality_score(quality_scores)
+            health_impact = self._calculate_health_impact(quality_score, metrics)
         
         # Create analysis record
         analysis = CommitAnalysis(
@@ -90,7 +125,9 @@ class AnalysisService:
             analysis_data={
                 "metrics": metrics,
                 "quality_breakdown": quality_scores,
-                "files_modified": metrics["files_modified"]
+                "files_modified": metrics["files_modified"],
+                "ai_analysis": ai_analysis if self.ai_enabled and 'ai_analysis' in locals() else None,
+                "analysis_method": "ai_powered" if self.ai_enabled and 'ai_analysis' in locals() else "basic"
             }
         )
         
