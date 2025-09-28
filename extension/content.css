@@ -1,0 +1,254 @@
+/* Tamagitto GitHub Integration Styles */
+
+/* Repository Header Indicator */
+.tamagitto-repo-indicator {
+    margin: 8px 0;
+    display: inline-block;
+    position: relative;
+}
+
+.tamagitto-health-badge,
+.tamagitto-setup-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tamagitto-health-badge:hover,
+.tamagitto-setup-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Health Badge Colors */
+.tamagitto-health-badge.excellent {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.tamagitto-health-badge.good {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.tamagitto-health-badge.warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+.tamagitto-health-badge.danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.tamagitto-health-badge.critical {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: white;
+}
+
+.tamagitto-setup-badge {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+}
+
+.tamagitto-icon {
+    font-size: 14px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.tamagitto-health {
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.tamagitto-text {
+    font-weight: 500;
+    font-size: 11px;
+}
+
+/* Tooltip */
+.tamagitto-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 1000;
+    margin-bottom: 8px;
+}
+
+.tamagitto-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+}
+
+.tamagitto-health-badge:hover .tamagitto-tooltip,
+.tamagitto-setup-badge:hover .tamagitto-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Commit Quality Indicators */
+.tamagitto-commit-indicator {
+    margin-left: 8px;
+    display: inline-block;
+}
+
+.tamagitto-commit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    color: white;
+}
+
+.tamagitto-commit-badge.excellent {
+    background: #10b981;
+}
+
+.tamagitto-commit-badge.good {
+    background: #3b82f6;
+}
+
+.tamagitto-commit-badge.warning {
+    background: #f59e0b;
+}
+
+.tamagitto-commit-badge.danger {
+    background: #ef4444;
+}
+
+.tamagitto-quality {
+    font-weight: 600;
+}
+
+.tamagitto-impact {
+    font-size: 9px;
+}
+
+/* PR Health Indicator */
+.tamagitto-pr-indicator {
+    margin: 16px 0;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.tamagitto-pr-health {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tamagitto-pr-details {
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.tamagitto-loading {
+    color: #6b7280;
+    font-style: italic;
+}
+
+.tamagitto-impact {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+}
+
+.tamagitto-impact.positive {
+    color: #10b981;
+}
+
+.tamagitto-impact.negative {
+    color: #ef4444;
+}
+
+.tamagitto-impact.neutral {
+    color: #6b7280;
+}
+
+.tamagitto-summary {
+    margin-top: 4px;
+    color: #9ca3af;
+    font-size: 11px;
+}
+
+.tamagitto-error {
+    color: #f87171;
+    font-size: 11px;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .tamagitto-pr-indicator {
+        background: rgba(0, 0, 0, 0.2);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .tamagitto-health-badge,
+    .tamagitto-setup-badge {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Animation for health changes */
+@keyframes healthPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.tamagitto-health-badge.updated {
+    animation: healthPulse 0.6s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tamagitto-health-badge,
+    .tamagitto-setup-badge {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .tamagitto-icon {
+        font-size: 12px;
+    }
+
+    .tamagitto-pr-indicator {
+        padding: 8px;
+    }
+
+    .tamagitto-tooltip {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+}

@@ -1,7 +1,9 @@
 """Authentication API routes."""
 
 from typing import Optional
+import json
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi.responses import HTMLResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -54,16 +56,17 @@ async def github_auth_url():
     }
 
 
-@router.post("/github/callback", response_model=TokenResponse)
+@router.get("/github/callback")
 async def github_callback(
-    request: GitHubCallbackRequest,
-    http_request: Request,
+    code: str,
+    state: str = None,
+    http_request: Request = None,
     db: Session = Depends(get_db)
 ):
     """Handle GitHub OAuth callback."""
     try:
         # Exchange code for token and user info
-        github_data = await github_service.exchange_code_for_token(request.code)
+        github_data = await github_service.exchange_code_for_token(code)
         access_token = github_data["access_token"]
         github_user = github_data["user"]
         
@@ -98,9 +101,45 @@ async def github_callback(
             db, user, jwt_refresh_token, user_agent, client_ip
         )
         
-        return auth_service.create_auth_response(
-            user, jwt_access_token, jwt_refresh_token
-        )
+        # Return success page with tokens that the extension can capture
+        success_html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Authentication Successful</title>
+            <style>
+                body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                       text-align: center; padding: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                       color: white; margin: 0; }}
+                .container {{ max-width: 400px; margin: 0 auto; background: rgba(255,255,255,0.1);
+                            padding: 40px; border-radius: 20px; }}
+                h1 {{ margin-bottom: 20px; }}
+                .success {{ color: #10b981; font-size: 60px; margin-bottom: 20px; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="success">✅</div>
+                <h1>Authentication Successful!</h1>
+                <p>You can now close this tab and return to the Tamagitto extension.</p>
+                <script>
+                    // Store tokens for extension to access
+                    window.tamagittoAuth = {json.dumps({
+                        "access_token": jwt_access_token,
+                        "refresh_token": jwt_refresh_token,
+                        "user": user.to_dict()
+                    })};
+
+                    // Try to close the tab after 2 seconds
+                    setTimeout(() => {{
+                        window.close();
+                    }}, 2000);
+                </script>
+            </div>
+        </body>
+        </html>
+        """
+        return HTMLResponse(content=success_html)
         
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Authentication failed: {str(e)}")

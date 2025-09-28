@@ -7,13 +7,6 @@
 		}
 	}
 
-	# OAuth callback route (GitHub redirects here) - forward to API
-	handle /auth/github/callback {
-		reverse_proxy backend:8000 {
-			# Rewrite path to match backend router
-			rewrite /api/auth/github/callback
-		}
-	}
 
 	# API routes - forward with /api prefix intact
 	handle /api/* {

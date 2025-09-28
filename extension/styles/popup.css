@@ -1,0 +1,585 @@
+/* Tamagitto Extension Popup Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 320px;
+    height: 480px;
+    min-height: 480px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#app-container {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+}
+
+/* Screen Management */
+.screen {
+    padding: 16px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen.hidden {
+    display: none;
+}
+
+/* Header Styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Button Styles */
+.primary-button {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    width: 100%;
+    justify-content: center;
+}
+
+.primary-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.primary-button:disabled {
+    background: #6b7280;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.secondary-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.secondary-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.icon-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Authentication Screen */
+.welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    justify-content: center;
+    gap: 16px;
+}
+
+.mascot-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    margin-bottom: 8px;
+}
+
+.welcome h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* Repository Selection */
+.search-container {
+    margin-bottom: 16px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 14px;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #4facfe;
+    box-shadow: 0 0 0 2px rgba(79, 172, 254, 0.3);
+}
+
+.repo-list {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.repo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.repo-info {
+    flex: 1;
+}
+
+.repo-name {
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.repo-language {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.repo-actions {
+    margin-left: 12px;
+}
+
+.select-repo-btn {
+    background: #4facfe;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.select-repo-btn:hover {
+    background: #3b9bfe;
+}
+
+/* Entity Display */
+.entity-display {
+    margin-bottom: 20px;
+}
+
+.entity-visual {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.entity-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    margin-bottom: 12px;
+}
+
+.health-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.health-bar {
+    width: 120px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.health-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.health-fill.excellent {
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+.health-fill.good {
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.health-fill.warning {
+    background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.health-fill.danger {
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+.health-fill.critical {
+    background: linear-gradient(90deg, #dc2626 0%, #991b1b 100%);
+}
+
+.entity-status {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.label {
+    opacity: 0.8;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.status-badge.thriving {
+    background: #10b981;
+}
+
+.status-badge.healthy {
+    background: #3b82f6;
+}
+
+.status-badge.struggling {
+    background: #f59e0b;
+}
+
+.status-badge.critical {
+    background: #ef4444;
+}
+
+/* Recent Activity */
+.recent-activity {
+    margin-bottom: 16px;
+}
+
+.recent-activity h4 {
+    font-size: 14px;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+.activity-list {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    margin-bottom: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.activity-icon {
+    font-size: 14px;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    margin-bottom: 2px;
+    line-height: 1.3;
+}
+
+.activity-time {
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+.activity-change {
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.activity-change.positive {
+    color: #10b981;
+}
+
+.activity-change.negative {
+    color: #ef4444;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+/* Death Screen */
+.death-notice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    justify-content: center;
+    gap: 16px;
+}
+
+.rip-image {
+    width: 80px;
+    height: 80px;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.cooldown-timer {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px 20px;
+    border-radius: 16px;
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 1000;
+}
+
+.loading-overlay.hidden {
+    display: none !important;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading-message {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Error Container */
+.error-container {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    z-index: 1001;
+}
+
+.error-content {
+    background: #ef4444;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.error-text {
+    font-size: 13px;
+    flex: 1;
+}
+
+.error-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 12px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Notification Styles */
+.health-notification {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    z-index: 1002;
+    animation: slideIn 0.3s ease;
+}
+
+.health-notification.positive {
+    border-left: 4px solid #10b981;
+}
+
+.health-notification.negative {
+    border-left: 4px solid #ef4444;
+}
+
+.temp-message {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 11px;
+    z-index: 1002;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
