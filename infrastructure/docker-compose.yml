@@ -55,6 +55,7 @@ services:
         condition: service_healthy
     volumes:
       - ../backend:/app
+      - alembic_versions:/app/alembic/versions
     command: ["/app/start.sh"]
     
   caddy:
@@ -75,9 +76,10 @@ services:
 
 volumes:
   postgres_data:
-  redis_data:  
+  redis_data:
   caddy_data:
   caddy_config:
+  alembic_versions:
 
 networks:
   default:
