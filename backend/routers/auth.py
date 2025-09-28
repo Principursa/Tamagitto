@@ -44,7 +44,7 @@ async def github_auth_url():
     auth_url = (
         f"https://github.com/login/oauth/authorize"
         f"?client_id={client_id}"
-        f"&scope=repo,user:email"
+        f"&scope=public_repo,user:email"
         f"&state=tamagitto_auth"
     )
     
