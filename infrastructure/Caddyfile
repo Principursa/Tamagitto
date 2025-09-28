@@ -7,8 +7,8 @@
 		}
 	}
 
-	# API routes - strip /api prefix and forward
-	handle_path /api/* {
+	# API routes - forward with /api prefix intact
+	handle /api/* {
 		reverse_proxy backend:8000
 	}
 
