@@ -1,12 +1,16 @@
 {$DOMAIN:localhost} {
-    # Static site root
-    root * /var/www/static
-    
-    # Enable file server for static files
-    file_server
-    
-    # API documentation
+    # API documentation (must come before file_server)
     handle /docs* {
+        reverse_proxy backend:8000
+    }
+    
+    # ReDoc documentation
+    handle /redoc* {
+        reverse_proxy backend:8000
+    }
+    
+    # OpenAPI schema
+    handle /openapi.json {
         reverse_proxy backend:8000
     }
     
@@ -27,6 +31,12 @@
             header_up Connection {http.request.header.connection}
         }
     }
+    
+    # Static site root (comes after API handlers)
+    root * /var/www/static
+    
+    # Enable file server for static files
+    file_server
     
     # Security headers
     header {
