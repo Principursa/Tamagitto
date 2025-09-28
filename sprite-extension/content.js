@@ -164,7 +164,56 @@ function stopSprint(){
   const badge = document.getElementById('cc-badge');
   if (badge) badge.style.display = 'none';
 }
-
+function dragEnable(el, storageKey, handle) {
+  let dragging = false;
+  let dx = 0;
+  let dy = 0;
+  const target = handle || el;
+  
+  const onStart = function(x, y) {
+    const r = el.getBoundingClientRect();
+    el.style.top = r.top + 'px'; 
+    el.style.left = r.left + 'px'; 
+    el.style.bottom = 'auto'; 
+    el.style.right = 'auto';
+    dx = x - r.left; 
+    dy = y - r.top; 
+    dragging = true; 
+    (handle || el).style.cursor = 'grabbing';
+  };
+  
+  const onMove = function(x, y) {
+    if (!dragging) return;
+    const left = Math.max(8, Math.min(window.innerWidth - 40, x - dx));
+    const top = Math.max(8, Math.min(window.innerHeight - 40, y - dy));
+    el.style.left = left + 'px'; 
+    el.style.top = top + 'px';
+  };
+  
+  const onEnd = function() {
+    if (!dragging) return;
+    dragging = false; 
+    (handle || el).style.cursor = 'grab';
+    const r = el.getBoundingClientRect();
+    savePos(storageKey, { top: Math.round(r.top), left: Math.round(r.left) });
+  };
+  
+  target.addEventListener('mousedown', function(e) { e.preventDefault(); onStart(e.clientX, e.clientY); });
+  window.addEventListener('mousemove', function(e) { onMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', onEnd);
+  
+  target.addEventListener('touchstart', function(e) { 
+    const t = e.touches[0]; 
+    if (!t) return; 
+    onStart(t.clientX, t.clientY); 
+  });
+  window.addEventListener('touchmove', function(e) { 
+    const t = e.touches && e.touches[0]; 
+    if (!t) return; 
+    onMove(t.clientX, t.clientY); 
+  });
+  window.addEventListener('touchend', onEnd);
+}
 function createFloatingSprite(efMode) {
   // Create sprite
   const sprite = document.createElement('div');
@@ -358,6 +407,10 @@ function createFloatingSprite(efMode) {
       });
     }
   }
+
+  // Enable dragging
+  dragEnable(sprite, 'cc-sprite-pos');
+  dragEnable(bubble, 'cc-bubble-pos', header);
 
   document.body.appendChild(sprite);
   document.body.appendChild(bubble);
