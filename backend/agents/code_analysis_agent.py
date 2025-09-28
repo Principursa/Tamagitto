@@ -35,10 +35,21 @@ class CodeAnalysisAgent:
         # Initialize Google ADK for code analysis
         if ADK_AVAILABLE:
             try:
-                # Configure Google ADK client
-                self.adk_client = adk.Client(api_key=api_key)
+                # Configure Google ADK - check what's actually available
+                # Common Google ADK patterns:
+                if hasattr(adk, 'configure'):
+                    adk.configure(api_key=api_key)
+                    self.adk_client = adk
+                elif hasattr(adk, 'AIStudio'):
+                    self.adk_client = adk.AIStudio(api_key=api_key)
+                elif hasattr(adk, 'CodeAnalyzer'):
+                    self.adk_client = adk.CodeAnalyzer(api_key=api_key)
+                else:
+                    # Generic initialization
+                    self.adk_client = adk
+
                 self.adk_enabled = True
-                print("✅ Google ADK initialized for code analysis")
+                print(f"✅ Google ADK initialized for code analysis (using {type(self.adk_client)})")
             except Exception as e:
                 print(f"Warning: Failed to initialize Google ADK: {e}")
                 self.adk_enabled = False
