@@ -25,12 +25,27 @@ done
 # Check if this is the first time (no migrations directory or empty)
 if [ ! -d "alembic/versions" ] || [ -z "$(ls -A alembic/versions 2>/dev/null)" ]; then
     echo "Generating initial migration..."
+    echo "Directory contents: $(ls -la alembic/versions/)"
     uv run -- alembic revision --autogenerate -m "Initial migration with all models"
+    echo "Migration generation result: $?"
+    echo "Directory contents after: $(ls -la alembic/versions/)"
+else
+    echo "Migration files already exist: $(ls -la alembic/versions/)"
 fi
 
 # Run migrations
 echo "Running database migrations..."
+echo "Current migration files: $(ls -la alembic/versions/)"
 uv run -- alembic upgrade head
+echo "Migration upgrade result: $?"
+echo "Checking database tables:"
+uv run -- python -c "
+from database import engine
+with engine.connect() as conn:
+    result = conn.execute('SELECT tablename FROM pg_tables WHERE schemaname = \'public\'')
+    tables = [row[0] for row in result]
+    print('Tables:', tables)
+"
 
 # Start the application
 echo "Starting FastAPI application..."
