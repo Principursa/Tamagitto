@@ -1,21 +1,39 @@
 {$DOMAIN:localhost} {
-	# API and documentation routes - highest priority
-	reverse_proxy /docs* backend:8000
-	reverse_proxy /redoc* backend:8000
-	reverse_proxy /openapi.json backend:8000
-	reverse_proxy /api/* backend:8000
-	reverse_proxy /webhook/* backend:8000
-
-	# WebSocket with special headers
-	reverse_proxy /api/ws backend:8000 {
-		header_up Upgrade {http.request.header.upgrade}
-		header_up Connection {http.request.header.connection}
+	# API and documentation routes - handled first
+	handle /docs* {
+		reverse_proxy backend:8000
 	}
 
-	# Static site for everything else
-	root * /var/www/static
-	file_server
-	try_files {path} {path}/ /index.html
+	handle /redoc* {
+		reverse_proxy backend:8000
+	}
+
+	handle /openapi.json {
+		reverse_proxy backend:8000
+	}
+
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle /webhook/* {
+		reverse_proxy backend:8000
+	}
+
+	# WebSocket with special headers
+	handle /api/ws {
+		reverse_proxy backend:8000 {
+			header_up Upgrade {http.request.header.upgrade}
+			header_up Connection {http.request.header.connection}
+		}
+	}
+
+	# Static site - only for remaining paths
+	handle /* {
+		root * /var/www/static
+		file_server
+		try_files {path} {path}/ /index.html
+	}
     
 	# Security headers
 	header {
