@@ -22,22 +22,21 @@ except psycopg2.OperationalError:
   sleep 1
 done
 
-# Check if this is the first time (no migrations directory or no .py files)
-if [ ! -d "alembic/versions" ] || [ -z "$(ls alembic/versions/*.py 2>/dev/null)" ]; then
-    echo "Generating initial migration..."
-    echo "Directory contents: $(ls -la alembic/versions/)"
-    echo "Running: uv run -- alembic revision --autogenerate -m 'Initial migration with all models'"
-    uv run -- alembic revision --autogenerate -m "Initial migration with all models" 2>&1 | tee migration_output.log
-    RESULT=$?
-    echo "Migration generation result: $RESULT"
-    if [ $RESULT -ne 0 ]; then
-        echo "Migration generation failed! Output:"
-        cat migration_output.log
-    fi
-    echo "Directory contents after: $(ls -la alembic/versions/)"
+# Force migration generation for debugging
+echo "Checking for .py migration files: $(ls alembic/versions/*.py 2>/dev/null || echo 'No .py files found')"
+echo "Forcing migration generation..."
+echo "Directory contents before: $(ls -la alembic/versions/)"
+echo "Running: uv run -- alembic revision --autogenerate -m 'Initial migration with all models'"
+uv run -- alembic revision --autogenerate -m "Initial migration with all models" 2>&1 | tee migration_output.log
+RESULT=$?
+echo "Migration generation result: $RESULT"
+if [ $RESULT -ne 0 ]; then
+    echo "Migration generation failed! Output:"
+    cat migration_output.log
 else
-    echo "Migration files already exist: $(ls -la alembic/versions/)"
+    echo "Migration generation successful!"
 fi
+echo "Directory contents after: $(ls -la alembic/versions/)"
 
 # Run migrations
 echo "Running database migrations..."
