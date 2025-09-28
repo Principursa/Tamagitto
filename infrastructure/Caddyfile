@@ -1,5 +1,18 @@
 {$DOMAIN:localhost} {
-	# API and documentation routes - handled first
+	# Most specific routes first - WebSocket
+	handle /api/ws {
+		reverse_proxy backend:8000 {
+			header_up Upgrade {http.request.header.upgrade}
+			header_up Connection {http.request.header.connection}
+		}
+	}
+
+	# API routes - strip /api prefix and forward
+	handle_path /api/* {
+		reverse_proxy backend:8000
+	}
+
+	# Documentation routes
 	handle /docs* {
 		reverse_proxy backend:8000
 	}
@@ -12,24 +25,13 @@
 		reverse_proxy backend:8000
 	}
 
-	handle /api/* {
-		reverse_proxy backend:8000
-	}
-
+	# Webhook routes
 	handle /webhook/* {
 		reverse_proxy backend:8000
 	}
 
-	# WebSocket with special headers
-	handle /api/ws {
-		reverse_proxy backend:8000 {
-			header_up Upgrade {http.request.header.upgrade}
-			header_up Connection {http.request.header.connection}
-		}
-	}
-
-	# Static site - only for remaining paths
-	handle /* {
+	# Static site - catch everything else
+	handle {
 		root * /var/www/static
 		file_server
 		try_files {path} {path}/ /index.html
