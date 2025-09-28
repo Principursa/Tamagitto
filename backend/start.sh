@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Add debugging
+echo "🚀 START SCRIPT RUNNING - $(date)"
+echo "DATABASE_URL: $DATABASE_URL"
+echo "Working directory: $(pwd)"
+echo "Files in current dir: $(ls -la)"
+
 # Wait for database to be ready
 echo "Waiting for database..."
 until uv run -- python -c "
