@@ -1,48 +1,48 @@
 {$DOMAIN:localhost} {
-    # API and documentation routes - highest priority
-    reverse_proxy /docs* backend:8000
-    reverse_proxy /redoc* backend:8000  
-    reverse_proxy /openapi.json backend:8000
-    reverse_proxy /api/* backend:8000
-    reverse_proxy /webhook/* backend:8000
+	# API and documentation routes - highest priority
+	reverse_proxy /docs* backend:8000
+	reverse_proxy /redoc* backend:8000
+	reverse_proxy /openapi.json backend:8000
+	reverse_proxy /api/* backend:8000
+	reverse_proxy /webhook/* backend:8000
+
+	# WebSocket with special headers
+	reverse_proxy /api/ws backend:8000 {
+		header_up Upgrade {http.request.header.upgrade}
+		header_up Connection {http.request.header.connection}
+	}
+
+	# Static site for everything else
+	root * /var/www/static
+	file_server
+	try_files {path} {path}/ /index.html
     
-    # WebSocket with special headers
-    reverse_proxy /api/ws backend:8000 {
-        header_up Upgrade {http.request.header.upgrade}
-        header_up Connection {http.request.header.connection}
-    }
-    
-    # Static site for everything else
-    root * /var/www/static
-    file_server
-    try_files {path} {path}/ /index.html
-    
-    # Security headers
-    header {
-        X-Content-Type-Options nosniff
-        X-Frame-Options DENY
-        X-XSS-Protection "1; mode=block"
-        Referrer-Policy strict-origin-when-cross-origin
-        
-        # CORS headers for extension
-        Access-Control-Allow-Origin "chrome-extension://*"
-        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-        Access-Control-Allow-Headers "Authorization, Content-Type"
-        Access-Control-Max-Age "86400"
-    }
-    
-    # Handle CORS preflight requests
-    @options {
-        method OPTIONS
-    }
-    respond @options 204
-    
-    # Compression
-    encode gzip zstd
-    
-    # Logging
-    log {
-        output file /data/access.log
-        format json
-    }
+	# Security headers
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy strict-origin-when-cross-origin
+
+		# CORS headers for extension
+		Access-Control-Allow-Origin "chrome-extension://*"
+		Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+		Access-Control-Allow-Headers "Authorization, Content-Type"
+		Access-Control-Max-Age "86400"
+	}
+
+	# Handle CORS preflight requests
+	@options {
+		method OPTIONS
+	}
+	respond @options 204
+
+	# Compression
+	encode gzip zstd
+
+	# Logging
+	log {
+		output file /data/access.log
+		format json
+	}
 }
