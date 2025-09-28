@@ -16,15 +16,28 @@ except psycopg2.OperationalError:
   sleep 1
 done
 
-# Check if this is the first time (no .py migration files)
-if [ -z "$(ls alembic/versions/*.py 2>/dev/null)" ]; then
-    echo "Generating initial migration..."
-    uv run -- alembic revision --autogenerate -m "Initial migration with all models"
-fi
+# Create tables directly using SQLAlchemy (skip Alembic for now)
+echo "Creating database tables..."
+uv run -- python -c "
+from database import Base, engine
+from models.user import User
+from models.repository import Repository
+from models.entity import Entity
+from models.commit_analysis import CommitAnalysis
+from models.health_history import HealthHistory
+from models.user_session import UserSession
 
-# Run migrations
-echo "Running database migrations..."
-uv run -- alembic upgrade head
+print('Creating all tables...')
+Base.metadata.create_all(bind=engine)
+print('Tables created successfully!')
+
+# Verify tables exist
+from sqlalchemy import text
+with engine.connect() as conn:
+    result = conn.execute(text('SELECT tablename FROM pg_tables WHERE schemaname = \'public\''))
+    tables = [row[0] for row in result]
+    print('Tables in database:', sorted(tables))
+"
 
 # Start the application
 echo "Starting FastAPI application..."
