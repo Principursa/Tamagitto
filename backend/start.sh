@@ -26,8 +26,14 @@ done
 if [ ! -d "alembic/versions" ] || [ -z "$(ls alembic/versions/*.py 2>/dev/null)" ]; then
     echo "Generating initial migration..."
     echo "Directory contents: $(ls -la alembic/versions/)"
-    uv run -- alembic revision --autogenerate -m "Initial migration with all models"
-    echo "Migration generation result: $?"
+    echo "Running: uv run -- alembic revision --autogenerate -m 'Initial migration with all models'"
+    uv run -- alembic revision --autogenerate -m "Initial migration with all models" 2>&1 | tee migration_output.log
+    RESULT=$?
+    echo "Migration generation result: $RESULT"
+    if [ $RESULT -ne 0 ]; then
+        echo "Migration generation failed! Output:"
+        cat migration_output.log
+    fi
     echo "Directory contents after: $(ls -la alembic/versions/)"
 else
     echo "Migration files already exist: $(ls -la alembic/versions/)"
