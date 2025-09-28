@@ -1,8 +1,8 @@
 """Authentication service for JWT tokens and user sessions."""
 
 import os
-import jwt
 import secrets
+from jose import jwt
 from typing import Dict, Any, Optional
 from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
