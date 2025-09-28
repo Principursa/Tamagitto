@@ -22,8 +22,8 @@ except psycopg2.OperationalError:
   sleep 1
 done
 
-# Check if this is the first time (no migrations directory or empty)
-if [ ! -d "alembic/versions" ] || [ -z "$(ls -A alembic/versions 2>/dev/null)" ]; then
+# Check if this is the first time (no migrations directory or no .py files)
+if [ ! -d "alembic/versions" ] || [ -z "$(ls alembic/versions/*.py 2>/dev/null)" ]; then
     echo "Generating initial migration..."
     echo "Directory contents: $(ls -la alembic/versions/)"
     uv run -- alembic revision --autogenerate -m "Initial migration with all models"
