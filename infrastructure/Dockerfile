@@ -23,9 +23,11 @@ RUN uv sync --frozen --no-dev
 # Copy application code
 COPY . .
 
-# Create non-root user
+# Create non-root user and fix permissions
 RUN useradd --create-home --shell /bin/bash app \
-    && chown -R app:app /app
+    && chown -R app:app /app \
+    && chmod -R 755 /app/alembic \
+    && chmod -R 777 /app/alembic/versions
 USER app
 
 # Health check

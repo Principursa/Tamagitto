@@ -1,17 +1,5 @@
 #!/bin/bash
 
-# Add debugging
-echo "🚀 START SCRIPT RUNNING - $(date)"
-echo "DATABASE_URL: $DATABASE_URL"
-echo "Working directory: $(pwd)"
-echo "Files in current dir: $(ls -la)"
-
-# Fix permissions for alembic directory
-echo "Fixing permissions for alembic directory..."
-chmod -R 777 alembic/versions/ 2>/dev/null || true
-echo "Current user: $(whoami)"
-echo "Directory permissions: $(ls -la alembic/)"
-
 # Wait for database to be ready
 echo "Waiting for database..."
 until uv run -- python -c "
@@ -28,36 +16,15 @@ except psycopg2.OperationalError:
   sleep 1
 done
 
-# Force migration generation for debugging
-echo "Checking for .py migration files: $(ls alembic/versions/*.py 2>/dev/null || echo 'No .py files found')"
-echo "Forcing migration generation..."
-echo "Directory contents before: $(ls -la alembic/versions/)"
-echo "Running: uv run -- alembic revision --autogenerate -m 'Initial migration with all models'"
-uv run -- alembic revision --autogenerate -m "Initial migration with all models" 2>&1 | tee migration_output.log
-RESULT=$?
-echo "Migration generation result: $RESULT"
-if [ $RESULT -ne 0 ]; then
-    echo "Migration generation failed! Output:"
-    cat migration_output.log
-else
-    echo "Migration generation successful!"
+# Check if this is the first time (no .py migration files)
+if [ -z "$(ls alembic/versions/*.py 2>/dev/null)" ]; then
+    echo "Generating initial migration..."
+    uv run -- alembic revision --autogenerate -m "Initial migration with all models"
 fi
-echo "Directory contents after: $(ls -la alembic/versions/)"
 
 # Run migrations
 echo "Running database migrations..."
-echo "Current migration files: $(ls -la alembic/versions/)"
 uv run -- alembic upgrade head
-echo "Migration upgrade result: $?"
-echo "Checking database tables:"
-uv run -- python -c "
-from database import engine
-from sqlalchemy import text
-with engine.connect() as conn:
-    result = conn.execute(text('SELECT tablename FROM pg_tables WHERE schemaname = \'public\''))
-    tables = [row[0] for row in result]
-    print('Tables:', tables)
-"
 
 # Start the application
 echo "Starting FastAPI application..."
