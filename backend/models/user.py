@@ -136,7 +136,6 @@ class User(Base, TimestampMixin):
         salt = hashlib.sha256(github_id.encode()).digest()
         
         # Derive key using PBKDF2
-        import hashlib
         key = hashlib.pbkdf2_hmac('sha256', master_key, salt, 100000)
         
         # Encode as base64 for Fernet
