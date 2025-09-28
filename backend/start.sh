@@ -6,6 +6,12 @@ echo "DATABASE_URL: $DATABASE_URL"
 echo "Working directory: $(pwd)"
 echo "Files in current dir: $(ls -la)"
 
+# Fix permissions for alembic directory
+echo "Fixing permissions for alembic directory..."
+chmod -R 777 alembic/versions/ 2>/dev/null || true
+echo "Current user: $(whoami)"
+echo "Directory permissions: $(ls -la alembic/)"
+
 # Wait for database to be ready
 echo "Waiting for database..."
 until uv run -- python -c "
