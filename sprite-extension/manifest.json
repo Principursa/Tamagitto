@@ -1,20 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Code Companion Sprite",
-  "version": "1.0",
-  "description": "Motivational coding companion",
-  "permissions": [
-    "activeTab",
-    "storage",
-    "tts"
-  ],
-  "host_permissions": [
-    "https://api.github.com/*"
-  ],
-  "action": {
-    "default_popup": "popup.html"
-  },
-  "background": {
+  "name": "Code Companion Sprite — sprite-extension v1.3",
+  "version": "1.3",
+  "description": "Motivational coding companion with AI learning",
+  "permissions": ["activeTab", "storage", "tts"],
+  "host_permissions": ["https://api.github.com/*"],
+  "action": { "default_popup": "popup.html" },
+  "background": { 
     "service_worker": "background.js"
   },
   "content_scripts": [
