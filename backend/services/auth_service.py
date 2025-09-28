@@ -139,11 +139,8 @@ class AuthService:
         # Create session record
         session = UserSession(
             user_id=user.id,
-            refresh_token_id=token_id,
-            user_agent=user_agent[:500] if user_agent else None,  # Truncate long user agents
-            ip_address=ip_address,
-            expires_at=expires_at,
-            is_active=True
+            session_token=token_id,
+            expires_at=expires_at
         )
         
         db.add(session)
@@ -170,8 +167,7 @@ class AuthService:
         
         # Verify session is still active
         session = db.query(UserSession).filter(
-            UserSession.refresh_token_id == token_id,
-            UserSession.is_active == True
+            UserSession.session_token == token_id
         ).first()
         
         if not session or session.expires_at < datetime.now(timezone.utc):
@@ -207,13 +203,11 @@ class AuthService:
         token_id = payload.get("jti")
         
         session = db.query(UserSession).filter(
-            UserSession.refresh_token_id == token_id,
-            UserSession.is_active == True
+            UserSession.session_token == token_id
         ).first()
-        
+
         if session:
-            session.is_active = False
-            session.revoked_at = datetime.utcnow()
+            db.delete(session)
             db.commit()
             return True
         
